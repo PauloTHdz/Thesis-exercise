@@ -33,7 +33,7 @@ IF OBJECT_ID('ComputerConfigurations', 'U') IS NOT NULL
 
 CREATE TABLE RamConfigurations (
     RamId INT IDENTITY(1,1) PRIMARY KEY,
-    Capacity INT NOT NULL,
+    Capacity DECIMAL(5,2) NOT NULL,
     Unit NVARCHAR(2) DEFAULT 'GB' NOT NULL,
     CONSTRAINT UQ_RamConfigurations_Capacity_Unit UNIQUE (Capacity, Unit)
 );

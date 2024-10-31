@@ -12,22 +12,21 @@ GO
 
 -- Drop Tables --
 
-IF OBJECT_ID('RamConfigurations', 'U') IS NOT NULL 
-	DROP TABLE dbo.RamConfigurations;
-
 IF OBJECT_ID('PortConfigurations', 'U') IS NOT NULL 
 	DROP TABLE dbo.PortConfigurations;
-
-IF OBJECT_ID('Processors', 'U') IS NOT NULL 
-	DROP TABLE dbo.Processors;
-
-IF OBJECT_ID('StorageDevices', 'U') IS NOT NULL 
-	DROP TABLE dbo.StorageDevices;
-	
 
 IF OBJECT_ID('ComputerConfigurations', 'U') IS NOT NULL 
 	DROP TABLE dbo.ComputerConfigurations;
 
+IF OBJECT_ID('RamConfigurations', 'U') IS NOT NULL 
+	DROP TABLE dbo.RamConfigurations;
+
+IF OBJECT_ID('StorageDevices', 'U') IS NOT NULL 
+	DROP TABLE dbo.StorageDevices;
+
+IF OBJECT_ID('Processors', 'U') IS NOT NULL 
+DROP TABLE dbo.Processors;
+	
 
 -- Create Schema --
 
@@ -35,22 +34,22 @@ CREATE TABLE RamConfigurations (
     RamId INT IDENTITY(1,1) PRIMARY KEY,
     Capacity INT NOT NULL,
     Unit NVARCHAR(2) DEFAULT 'GB' NOT NULL,
-    CONSTRAINT UQ_RamConfigurations_Capacity_Unit UNIQUE (Capacity, Unit)
+    --CONSTRAINT UQ_RamConfigurations_Capacity_Unit UNIQUE (Capacity, Unit)
 );
 
 CREATE TABLE StorageDevices (
     StorageId INT IDENTITY(1,1) PRIMARY KEY,
-    Capacity INT NOT NULL,
+    Capacity DECIMAL(5,2) NOT NULL,
     Unit NVARCHAR(2) NOT NULL,
     Type NVARCHAR(5) NOT NULL,
-    CONSTRAINT UQ_StorageDevices_Capacity_Unit_Type UNIQUE (Capacity, Unit, Type)
+    --CONSTRAINT UQ_StorageDevices_Capacity_Unit_Type UNIQUE (Capacity, Unit, Type)
 );
 
 CREATE TABLE Processors (
     ProcessorId INT IDENTITY(1,1) PRIMARY KEY,
     Manufacturer NVARCHAR(30) NOT NULL,
     Description NVARCHAR(160) NOT NULL,
-    CONSTRAINT UQ_Processors_Manufacturer_Family_Model UNIQUE (Manufacturer, Description)
+    --CONSTRAINT UQ_Processors_Manufacturer_Family_Model UNIQUE (Manufacturer, Description)
 );
 
 CREATE TABLE ComputerConfigurations (
