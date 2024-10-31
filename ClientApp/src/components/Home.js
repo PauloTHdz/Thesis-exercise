@@ -15,9 +15,9 @@ export const Home = (props) => {
         ramUnit: "GB",
 
         ports: [
-            { type: "USB-C", count: 2 },
-            { type: "HDMI", count: 1 },
-            { type: "DisplayPort", count: 1 }
+            { portType: "USB-C", portCount: 2 },
+            { portType: "HDMI", portCount: 1 },
+            { portType: "DisplayPort", portCount: 1 }
         ]
 
     });
@@ -49,10 +49,18 @@ export const Home = (props) => {
                 type: newConfig.storageType,
             };
 
+            // RAM Info
+            const ramData = {
+                capacity: newConfig.ramCapacity,
+                unit: newConfig.ramUnit
+            };
+
             //Combine data into single payload
             const computerData = {
                 processor: processorData,
                 storage: storageData,
+                ram: ramData,
+                ports: newConfig.ports
             };
 
             const response = await axios.post('/computer/AddComputer', computerData, {
@@ -62,7 +70,6 @@ export const Home = (props) => {
             alert(response.data); // Notify the user of the POST response
             //Clear form
             resetData();
-
             // Refresh data after adding a new entry
             handleLoadClicked();
 
@@ -81,23 +88,28 @@ export const Home = (props) => {
         setNewConfig((prevConfig) => ({ ...prevConfig, [name]: value }));
     };
 
-
+    //Clean form & reset data to original state.
     const resetData = () => {
         setNewConfig({
             processorManufacturer: "",
             processorDescription: "",
-            storageCapacity: "1",
+
+            storageCapacity: "1.7",
             storageUnit: "TB",
             storageType: "SSD",
+
+            ramCapacity: "64",
+            ramUnit: "GB",
+
             ports: [
-                { type: "USB-C", count: 2 },
-                { type: "HDMI", count: 1 },
-                { type: "DisplayPort", count: 1 }
+                { portType: "USB-C", portCount: 2 },
+                { portType: "HDMI", portCount: 1 },
+                { portType: "DisplayPort", portCount: 1 }
             ]
+
         }); 
 
     };
-
     
     return (
         <div className="container my-5 p-4 bg-light rounded shadow">

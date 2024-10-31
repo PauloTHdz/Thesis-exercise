@@ -19,6 +19,13 @@ namespace thesis_exercise.Models
 
         [Required]
         public required StorageDto Storage { get; set; }
+
+        [Required]
+        public required RamDto Ram { get; set; }
+
+        [Required]
+        public List<PortDto> Ports { get; set; } = new List<PortDto>();
+
     }
 
 
@@ -40,13 +47,23 @@ namespace thesis_exercise.Models
         public decimal Capacity { get; set; }
 
         [Required]
-        [MaxLength(10)]
+        [MaxLength(2)]
         public string Unit { get; set; } = string.Empty;
 
         [Required]
         [MaxLength(50)]
         public string Type { get; set; } = string.Empty;
 
+    }
+
+    public class RamDto
+    {
+        [Required]
+        public int Capacity { get; set; }
+
+        [Required]
+        [MaxLength(2)]
+        public string Unit { get; set; } = string.Empty;
     }
 
 
