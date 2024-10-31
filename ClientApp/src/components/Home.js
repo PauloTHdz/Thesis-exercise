@@ -55,11 +55,14 @@ export const Home = (props) => {
                 unit: newConfig.ramUnit
             };
 
+
+
             //Combine data into single payload
             const computerData = {
                 processor: processorData,
                 storage: storageData,
-                ram: ramData
+                ram: ramData,
+                ports: newConfig.ports
             };
 
             const response = await axios.post('/computer/AddComputer', computerData, {

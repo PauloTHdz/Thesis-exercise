@@ -68,7 +68,6 @@ public class ComputerController : ControllerBase
                 await _context.SaveChangesAsync();
 
                 // Map Port data
-                /*
                 var ports = computerDto.Ports.Select(port => new PortConfiguration
                 {
                     PortType = port.PortType,
@@ -77,7 +76,7 @@ public class ComputerController : ControllerBase
 
                 _context.PortConfigurations.AddRange(ports);
                 await _context.SaveChangesAsync();
-                */
+                
 
                 // Retrieve the generated IDs
                 int newProcessorId = processor.ProcessorId;
