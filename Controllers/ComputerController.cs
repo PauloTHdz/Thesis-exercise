@@ -58,6 +58,27 @@ public class ComputerController : ControllerBase
                 _context.StorageDevices.Add(storage);
                 await _context.SaveChangesAsync();
 
+                // Map RAM data
+                var ram = new RamConfiguration
+                {
+                    Capacity = computerDto.Ram.Capacity,
+                    Unit = computerDto.Ram.Unit
+                };
+                _context.RamConfigurations.Add(ram);
+                await _context.SaveChangesAsync();
+
+                // Map Port data
+                /*
+                var ports = computerDto.Ports.Select(port => new PortConfiguration
+                {
+                    PortType = port.PortType,
+                    PortCount = port.PortCount
+                }).ToList();
+
+                _context.PortConfigurations.AddRange(ports);
+                await _context.SaveChangesAsync();
+                */
+
                 // Retrieve the generated IDs
                 int newProcessorId = processor.ProcessorId;
                 int newStorageId = storage.StorageId;
@@ -67,6 +88,7 @@ public class ComputerController : ControllerBase
                 {
                     ProcessorId = newProcessorId,
                     StorageId = newStorageId,
+                    RamId = ram.RamId,
                     Message = "Computer configuration added successfully."
                 });
 
