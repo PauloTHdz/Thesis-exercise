@@ -23,9 +23,10 @@ DONE
 DONE
 2. In `Controllers/ComputerController.cs`, implement in the `Get` method to fetch data from the catalog. Design the API as you see fit, applying SOLID design principles.
 
-
+DONE
 3. In `ClientApp/src/components/Home.js`, complete the code to call the `Get` method and render the results in the table. Use React state and React best practices.
 
+DONE
 4. Across the full stack, add functionality to submit a form which adds a new row to the catalog. An endpoint and initial form have been provided which can be filled out with the final solution.
 
 5. Implement any one of the following features:

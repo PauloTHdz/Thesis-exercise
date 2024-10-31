@@ -3,6 +3,7 @@ using thesis_exercise.Repositories;
 using thesis_exercise.Models;
 using thesis_exercise.Data;
 using Microsoft.Identity.Client.Extensions.Msal;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace thesis_exercise.Controllers;
@@ -118,6 +119,17 @@ public class ComputerController : ControllerBase
         }
         return BadRequest("Invalid Data.");
 
+    }
+
+    [HttpGet("Search")] // **New Search Endpoint**
+    public async Task<IActionResult> Search([FromQuery] string processorDescription)
+    {
+        // **Filter by Processor Description**
+        var filteredConfigurations = await _context.ComputerConfigurations
+            .Where(c => c.Processor.Description.Contains(processorDescription))
+            .ToListAsync();
+
+        return Ok(filteredConfigurations);
     }
 
     [HttpPost]
