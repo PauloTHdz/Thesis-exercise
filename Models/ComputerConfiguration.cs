@@ -48,7 +48,7 @@ namespace thesis_exercise.Models
     {
         [Key]
         public int PortConfigId { get; set; }
-        public int ConfigId { get; set; }
+        public int ConfigId { get; set; } = 0;
         public string PortType { get; set; } = string.Empty;
         public int PortCount { get; set; }
 

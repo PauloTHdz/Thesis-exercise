@@ -67,16 +67,34 @@ public class ComputerController : ControllerBase
                 _context.RamConfigurations.Add(ram);
                 await _context.SaveChangesAsync();
 
+                // Create and save initial ComputerConfiguration entry without Ports
+                var computerConfig = new ComputerConfiguration
+                {
+                    Processor = processor,
+                    Storage = storage,
+                    Ram = ram
+                };
+                _context.ComputerConfigurations.Add(computerConfig);
+                await _context.SaveChangesAsync();
+
+                // Retrieve the generated ConfigId
+                int configId = computerConfig.ConfigId;
+
                 // Map Port data
                 var ports = computerDto.Ports.Select(port => new PortConfiguration
                 {
+                    ConfigId = configId,    
                     PortType = port.PortType,
                     PortCount = port.PortCount
                 }).ToList();
 
                 _context.PortConfigurations.AddRange(ports);
                 await _context.SaveChangesAsync();
-                
+
+                // Update the ComputerConfiguration with Ports relationship
+                computerConfig.Ports = ports;
+                _context.ComputerConfigurations.Update(computerConfig);
+                await _context.SaveChangesAsync();
 
                 // Retrieve the generated IDs
                 int newProcessorId = processor.ProcessorId;
@@ -85,6 +103,7 @@ public class ComputerController : ControllerBase
                 // Return the IDs in the response
                 return Ok(new
                 {
+                    ConfigId = computerConfig.ConfigId,
                     ProcessorId = newProcessorId,
                     StorageId = newStorageId,
                     RamId = ram.RamId,
