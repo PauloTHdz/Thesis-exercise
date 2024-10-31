@@ -30,7 +30,7 @@ namespace thesis_exercise.Models
     {
         [Key]
         public int StorageId { get; set; }
-        public int Capacity { get; set; }
+        public decimal Capacity { get; set; }
         public string Unit { get; set; } = string.Empty;
         public string Type { get; set; } = string.Empty;
 

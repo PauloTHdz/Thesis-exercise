@@ -3,6 +3,24 @@ import axios from "axios";
 
 export const Home = (props) => {
     const [computers, setComputers] = useState([]);
+    const [newConfig, setNewConfig] = useState({
+        processorManufacturer: "",
+        processorDescription: "",
+
+        storageCapacity: "1.7",
+        storageUnit: "TB",
+        storageType: "SSD",
+
+        ramCapacity: "64",
+        ramUnit: "GB",
+
+        ports: [
+            { type: "USB-C", count: 2 },
+            { type: "HDMI", count: 1 },
+            { type: "DisplayPort", count: 1 }
+        ]
+
+    });
 
     const handleLoadClicked = async () => {
         try {
@@ -16,16 +34,71 @@ export const Home = (props) => {
 
     const handleAddSubmit = async (e) => {
         e.preventDefault();
+
         try {
-            const response = await axios.post('/computer');
+            //Procesor Info
+            const processorData = {
+                manufacturer: newConfig.processorManufacturer,
+                description: newConfig.processorDescription
+            };
+
+            //Storage Info
+            const storageData = {
+                capacity: newConfig.storageCapacity,
+                unit: newConfig.storageUnit,
+                type: newConfig.storageType,
+            };
+
+            //Combine data into single payload
+            const computerData = {
+                processor: processorData,
+                storage: storageData,
+            };
+
+            const response = await axios.post('/computer/AddComputer', computerData, {
+                headers: { 'Content-Type': 'application/json' }
+            });
+
             alert(response.data); // Notify the user of the POST response
-            handleLoadClicked();  // Refresh data after adding a new entry
+            //Clear form
+            resetData();
+
+            // Refresh data after adding a new entry
+            handleLoadClicked();
+
         } catch (error) {
+
             console.error('Error adding data:', error);
+            //alert('Error adding data:', error);
             alert('Failed to add data');
+
         }
     };
 
+    // Function to update form fields
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setNewConfig((prevConfig) => ({ ...prevConfig, [name]: value }));
+    };
+
+
+    const resetData = () => {
+        setNewConfig({
+            processorManufacturer: "",
+            processorDescription: "",
+            storageCapacity: "1",
+            storageUnit: "TB",
+            storageType: "SSD",
+            ports: [
+                { type: "USB-C", count: 2 },
+                { type: "HDMI", count: 1 },
+                { type: "DisplayPort", count: 1 }
+            ]
+        }); 
+
+    };
+
+    
     return (
         <div className="container my-5 p-4 bg-light rounded shadow">
             <h1 id="tableLabel">Computer Catalog</h1>
@@ -63,25 +136,60 @@ export const Home = (props) => {
                 </table>
             </div>
 
-            <div className="mt-10">
 
-                <h5>Implement a form to add a row to the table based on your design</h5>
+
+            <div className="container my-5 p-4 bg-light rounded shadow">
+
+                <h5>Add new computer:</h5>
 
                 <form onSubmit={handleAddSubmit} className="row g-10">
-                    <div className="col-md-8">
-                        <input placeholder="Enter data" required className="form-control" />
+
+                    <div className="row mb-4">
+                        <div className="col-md-3">
+                            <label htmlFor="manufacturer" className="form-label">Processor</label>
+                            <input
+                                type="text"
+                                name="processorManufacturer"
+                                placeholder="Processor Manufacturer"
+                                required
+                                className="form-control"
+                                value={newConfig.processorManufacturer}
+                                onChange={handleInputChange}
+                            />
+
+                        </div>
+
+                        <div className="col-md-9">
+                            <label htmlFor="description" className="form-label">Description</label>
+                            <input
+                                type="text"
+                                name="processorDescription"
+                                placeholder="Processor Description"
+                                required
+                                className="form-control"
+                                value={newConfig.processorDescription}
+                                onChange={handleInputChange}
+                            />
+
+                        </div>
+
                     </div>
 
-                    <div className="col-md-2">
-                        <input type="submit" value="Add" className="btn btn-success w-100" />
+                    <div className="row mb-3">
+                        <div className="col-md-3">
+                            <br />
+                            <button type="submit" className="btn btn-success w-50">Add</button>
+                            {/*<input type="submit" value="Add" className="btn btn-success w-100" />*/}
+
+                        </div>
                     </div>
-                    
+
                 </form>
 
             </div>
 
+
+
         </div>
-
-
     );
 }
