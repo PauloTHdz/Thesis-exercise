@@ -3,6 +3,7 @@ using thesis_exercise.Repositories;
 using thesis_exercise.Models;
 using thesis_exercise.Data;
 using Microsoft.Identity.Client.Extensions.Msal;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace thesis_exercise.Controllers;
@@ -120,12 +121,22 @@ public class ComputerController : ControllerBase
 
     }
 
-    [HttpPost]
-    public async Task<IActionResult> Post()
-    {
-        return new JsonResult("POST");
-    }
 
+    //New Search Endpoint
+    [HttpGet("Search")] 
+    public async Task<IActionResult> Search([FromQuery] string processorDescription)
+    {
+        //Include related entities to ensure complete data is fetched**
+        var filteredConfigurations = await _context.ComputerConfigurations
+            .Include(c => c.Processor) 
+            .Include(c => c.Storage)   
+            .Include(c => c.Ram)       
+            .Include(c => c.Ports)     
+            .Where(c => c.Processor != null && c.Processor.Description.Contains(processorDescription))
+            .ToListAsync();
+
+        return Ok(filteredConfigurations);
+    }
 
 
 }

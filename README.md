@@ -23,15 +23,19 @@ DONE
 DONE
 2. In `Controllers/ComputerController.cs`, implement in the `Get` method to fetch data from the catalog. Design the API as you see fit, applying SOLID design principles.
 
-
+DONE
 3. In `ClientApp/src/components/Home.js`, complete the code to call the `Get` method and render the results in the table. Use React state and React best practices.
 
+DONE
 4. Across the full stack, add functionality to submit a form which adds a new row to the catalog. An endpoint and initial form have been provided which can be filled out with the final solution.
+
 
 5. Implement any one of the following features:
     - Add the ability to select a row in the catalog table and update any/all of its values.
     - Add comprehensive error handling and type checking when adding a new row to the catalog table.
-    - Add the ability to search the catalog. Implement and design the feature as you see fit.
+
+    DONE- Add the ability to search the catalog. Implement and design the feature as you see fit.
+    
     - Add comprehensive unit and/or integration tests to the solution
 
 As this project is meant to take no longer than 4 hours, it is expected the solution will not be production-ready and that compromises will be made. Use your best judgement and come prepared to the interview to speak about your design decisions and what you would change if this were a production-ready solution. Feel free to add any notes about your solution into this README.
