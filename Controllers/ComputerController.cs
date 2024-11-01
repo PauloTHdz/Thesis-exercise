@@ -121,23 +121,22 @@ public class ComputerController : ControllerBase
 
     }
 
-    [HttpGet("Search")] // **New Search Endpoint**
+
+    //New Search Endpoint
+    [HttpGet("Search")] 
     public async Task<IActionResult> Search([FromQuery] string processorDescription)
     {
-        // **Filter by Processor Description**
+        //Include related entities to ensure complete data is fetched**
         var filteredConfigurations = await _context.ComputerConfigurations
-            .Where(c => c.Processor.Description.Contains(processorDescription))
+            .Include(c => c.Processor) 
+            .Include(c => c.Storage)   
+            .Include(c => c.Ram)       
+            .Include(c => c.Ports)     
+            .Where(c => c.Processor != null && c.Processor.Description.Contains(processorDescription))
             .ToListAsync();
 
         return Ok(filteredConfigurations);
     }
-
-    [HttpPost]
-    public async Task<IActionResult> Post()
-    {
-        return new JsonResult("POST");
-    }
-
 
 
 }

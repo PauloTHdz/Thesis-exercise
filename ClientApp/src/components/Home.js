@@ -3,6 +3,7 @@ import axios from "axios";
 
 export const Home = (props) => {
     const [computers, setComputers] = useState([]);
+    const [searchQuery, setSearchQuery] = useState(""); // **New search state**
     const [newConfig, setNewConfig] = useState({
         processorManufacturer: "",
         processorDescription: "",
@@ -67,7 +68,7 @@ export const Home = (props) => {
                 headers: { 'Content-Type': 'application/json' }
             });
 
-            alert(response.data); // Notify the user of the POST response
+            alert(response.data.message); // Notify the user of the POST response
             //Clear form
             resetData();
             // Refresh data after adding a new entry
@@ -110,10 +111,35 @@ export const Home = (props) => {
         }); 
 
     };
+
+    //Handle Search Function
+    const handleSearchClicked = async () => {
+        try {
+            const response = await axios.get(`/computer/Search?processorDescription=${searchQuery}`);
+            setComputers(response.data);  // Set search results to state
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            alert('Failed to load data');
+        }
+    };
     
     return (
         <div className="container my-5 p-4 bg-light rounded shadow">
             <h1 id="tableLabel">Computer Catalog</h1>
+
+            {/* **Search Input and Button** */}
+            <div className="input-group mb-3">
+                <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Search by Processor Description"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                />
+                <button onClick={handleSearchClicked} className="btn btn-primary">Search</button>
+            </div>
+
+
             <div>Fill out the table below based on your database design</div>
             <br />
             <button onClick={handleLoadClicked} className="btn btn-primary me-3">Load Data</button>
