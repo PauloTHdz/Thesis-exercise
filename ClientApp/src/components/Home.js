@@ -114,6 +114,12 @@ export const Home = (props) => {
 
     //Handle Search Function
     const handleSearchClicked = async () => {
+
+        if (searchQuery.trim() === "") {
+            alert("Please enter a processor description to search.");
+            return;
+        }
+
         try {
             const response = await axios.get(`/computer/Search?processorDescription=${searchQuery}`);
             setComputers(response.data);  // Set search results to state
