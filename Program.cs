@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Mvc.NewtonsoftJson;
 using Microsoft.EntityFrameworkCore;
 using thesis_exercise.Data;
 using thesis_exercise.Repositories;
@@ -13,10 +12,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddControllers()
     .AddNewtonsoftJson(options =>
     {
-        options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;    
-        
-        //options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
-        //options.JsonSerializerOptions.ReferenceHandler = null;
+        options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
     });
 
 //Register DbContext
@@ -25,6 +21,18 @@ builder.Services.AddDbContext<CatalogContext>(options =>
 
 //Register |repository
 builder.Services.AddScoped<IComputerRepository, ComputerRepository>();
+
+// Add CORS service
+//builder.Services.AddCors(options =>
+//{
+//    options.AddPolicy("CorsPolicy", builder =>
+//    {
+//        builder.WithOrigins("https://127.0.0.1:44449/", "https://localhost:44395/", "https://localhost:38590/") // Replace with your origin
+//               .AllowAnyMethod()
+//               .AllowCredentials()
+//               .AllowAnyHeader();
+//    });
+//});
 
 var app = builder.Build();
 
@@ -38,6 +46,11 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
+
+// Use CORS middleware
+//app.UseCors("CorsPolicy");
+
+//app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
